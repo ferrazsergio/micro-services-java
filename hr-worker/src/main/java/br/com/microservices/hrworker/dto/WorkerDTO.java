@@ -11,7 +11,6 @@ public class WorkerDTO implements Serializable{
 	private Double dailyIncome;
 	
 	public WorkerDTO() {
-		super();
 	}
 
 	public WorkerDTO(Worker obj) {
