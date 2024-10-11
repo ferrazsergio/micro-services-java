@@ -23,6 +23,7 @@ public class Worker implements Serializable{
         this.name = name;
         this.dailyIncome = dailyIncome;
     }
+    
 	public Long getId() {
 		return id;
 	}

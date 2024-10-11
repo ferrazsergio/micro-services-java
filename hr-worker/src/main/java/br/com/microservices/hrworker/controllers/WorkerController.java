@@ -5,7 +5,10 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,11 +25,14 @@ import br.com.microservices.hrworker.services.WorkerService;
 public class WorkerController {
 
 	private WorkerService workerService;
-
+	private Environment env;
+	private static Logger logger = LoggerFactory.getLogger(WorkerController.class);
+	
 	@Autowired
-	public WorkerController(WorkerService workerService) {
+	public WorkerController(WorkerService workerService, Environment env) {
 		super();
 		this.workerService = workerService;
+		this.env = env;
 	}
 
 	@GetMapping
@@ -44,9 +50,12 @@ public class WorkerController {
 		}
 	}
 
+
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<WorkerDTO> findById(@PathVariable Long id) {
 		try {
+			logger.info("PORT = " + env.getProperty("local.server.port"));
 			Worker worker = workerService.findbyId(id);
 			return ResponseEntity.ok().body(new WorkerDTO(worker));
 		} catch (EntityNotFoundException e) {
